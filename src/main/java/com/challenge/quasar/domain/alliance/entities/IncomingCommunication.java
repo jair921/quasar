@@ -1,5 +1,6 @@
 package com.challenge.quasar.domain.alliance.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IncomingCommunication {
@@ -15,6 +16,14 @@ public class IncomingCommunication {
         }
 
         return distances;
+    }
+
+    public List<List<String>> secretMessages() {
+        List<List<String>> secretMessages = new ArrayList<List<String>>();
+        for(Satellite satellite : satellites){
+            secretMessages.add(satellite.getMessage());
+        }
+        return secretMessages;
     }
 
     public List<Satellite> getSatellites() {
