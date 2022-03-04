@@ -1,6 +1,9 @@
 package com.challenge.quasar.controllers;
 
+import com.challenge.quasar.domain.alliance.BuilderAlliance;
+import com.challenge.quasar.domain.alliance.dao.TopSecretDao;
 import com.challenge.quasar.domain.alliance.entities.IncomingCommunication;
+import com.challenge.quasar.domain.alliance.entities.OutgoingCommunication;
 import com.challenge.quasar.domain.alliance.entities.Satellite;
 import com.challenge.quasar.domain.alliance.services.AllianceService;
 import com.challenge.quasar.domain.message.exceptions.MessageException;
@@ -17,6 +20,12 @@ public class AllianceController {
     @Autowired
     private AllianceService allianceService;
 
+    @Autowired
+    private BuilderAlliance builderAlliance;
+
+    @Autowired
+    private TopSecretDao topSecretDao;
+
     @RequestMapping(path = "/topsecret")
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity topSecret(@RequestBody IncomingCommunication incomingCommunication)
@@ -24,7 +33,7 @@ public class AllianceController {
         try{
             return ResponseEntity.ok().body(allianceService.receiveCommunication(incomingCommunication));
         }catch (MessageException | PositionException exception){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
 
@@ -36,7 +45,7 @@ public class AllianceController {
             satellite.setName(satelliteName);
             return ResponseEntity.ok().body(allianceService.receiveCommunicationSplit(satellite));
         }catch (MessageException | PositionException exception){
-            return ResponseEntity.status(HttpStatus.OK).body(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new OutgoingCommunication(null, exception.getMessage()));
         }
     }
 
@@ -44,6 +53,12 @@ public class AllianceController {
     @GetMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity topSecret()
     {
-        return null;
+        try{
+            return ResponseEntity.ok().body(allianceService.receiveCommunication(
+                    builderAlliance.incomingCommunicationFromTopSecretList( topSecretDao.list() )
+            ));
+        }catch (MessageException | PositionException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new OutgoingCommunication(null, exception.getMessage()));
+        }
     }
 }

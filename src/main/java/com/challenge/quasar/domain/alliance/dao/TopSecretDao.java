@@ -20,6 +20,6 @@ public class TopSecretDao {
     }
 
     public List<TopSecret> list() {
-        return entityManager.createQuery("FROM top_secret").getResultList();
+        return entityManager.createQuery("FROM TopSecret").getResultList();
     }
 }

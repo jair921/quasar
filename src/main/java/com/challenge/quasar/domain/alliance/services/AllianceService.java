@@ -17,16 +17,16 @@ import org.springframework.stereotype.Service;
 public class AllianceService {
 
     @Autowired
-    PositionService positionService;
+    private PositionService positionService;
 
     @Autowired
-    MessageService messageService;
+    private MessageService messageService;
 
     @Autowired
-    Environment env;
+    private Environment env;
 
     @Autowired
-    TopSecretDao topSecretDao;
+    private TopSecretDao topSecretDao;
 
     public OutgoingCommunication receiveCommunication(IncomingCommunication incomingCommunication) throws PositionException, MessageException {
 
@@ -52,6 +52,10 @@ public class AllianceService {
 
         if(satellitePoint == null) {
             throw new PositionException("Unknown satellite.");
+        }
+
+        if(satellite.getDistance() == 0) {
+            throw new PositionException("Required distance.");
         }
 
         if(satellite.getMessage().isEmpty()) {
