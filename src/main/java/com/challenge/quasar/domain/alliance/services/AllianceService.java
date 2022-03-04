@@ -33,11 +33,11 @@ public class AllianceService {
         int numSatellites = Integer.parseInt(env.getProperty("satellites.size"));
 
         if(incomingCommunication.getSatellites().size() < numSatellites){
-            throw new PositionException("You need at least " + numSatellites + " satellites to locate the spaceship.");
+            throw new PositionException("You need " + numSatellites + " satellites to locate the spaceship.");
         }
 
         if(incomingCommunication.secretMessages().size() < numSatellites){
-            throw new MessageException("You need at least " + numSatellites + " messages to decode the secret.");
+            throw new MessageException("You need " + numSatellites + " messages to decode the secret.");
         }
 
         double[] position = positionService.getLocation(incomingCommunication.distances());

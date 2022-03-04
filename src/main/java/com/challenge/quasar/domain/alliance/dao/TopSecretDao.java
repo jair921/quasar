@@ -22,4 +22,8 @@ public class TopSecretDao {
     public List<TopSecret> list() {
         return entityManager.createQuery("FROM TopSecret").getResultList();
     }
+
+    public void removeAll() {
+        entityManager.createQuery("DELETE FROM TopSecret").executeUpdate();
+    }
 }

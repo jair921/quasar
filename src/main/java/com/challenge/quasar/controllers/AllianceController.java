@@ -61,4 +61,16 @@ public class AllianceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new OutgoingCommunication(null, exception.getMessage()));
         }
     }
+
+    @RequestMapping(path = "/restart_split")
+    @GetMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity restartSplit()
+    {
+        try{
+            topSecretDao.removeAll();
+            return ResponseEntity.ok().body(new OutgoingCommunication(null, "Remove all split messages."));
+        }catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new OutgoingCommunication(null, exception.getMessage()));
+        }
+    }
 }
