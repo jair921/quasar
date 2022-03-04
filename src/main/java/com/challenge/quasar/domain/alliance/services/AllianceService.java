@@ -1,7 +1,10 @@
 package com.challenge.quasar.domain.alliance.services;
 
+import com.challenge.quasar.domain.alliance.dao.TopSecretDao;
 import com.challenge.quasar.domain.alliance.entities.IncomingCommunication;
 import com.challenge.quasar.domain.alliance.entities.OutgoingCommunication;
+import com.challenge.quasar.domain.alliance.entities.Satellite;
+import com.challenge.quasar.domain.alliance.models.TopSecret;
 import com.challenge.quasar.domain.message.exceptions.MessageException;
 import com.challenge.quasar.domain.position.exceptions.PositionException;
 import com.challenge.quasar.domain.position.services.PositionService;
@@ -22,6 +25,9 @@ public class AllianceService {
     @Autowired
     Environment env;
 
+    @Autowired
+    TopSecretDao topSecretDao;
+
     public OutgoingCommunication receiveCommunication(IncomingCommunication incomingCommunication) throws PositionException, MessageException {
 
         int numSatellites = Integer.parseInt(env.getProperty("satellites.size"));
@@ -38,5 +44,22 @@ public class AllianceService {
         String secretMessage = messageService.getMessage(incomingCommunication.secretMessages());
 
         return new OutgoingCommunication(position, secretMessage);
+    }
+
+    public OutgoingCommunication receiveCommunicationSplit(Satellite satellite) throws PositionException, MessageException {
+
+        String satellitePoint = env.getProperty("satellites." + satellite.getName() + ".point");
+
+        if(satellitePoint == null) {
+            throw new PositionException("Unknown satellite.");
+        }
+
+        if(satellite.getMessage().isEmpty()) {
+            throw new MessageException("Message is needed.");
+        }
+
+        topSecretDao.save(satellite.buildTopSecret());
+
+        return new OutgoingCommunication(null, "Store split message");
     }
 }
