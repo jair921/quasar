@@ -1,5 +1,6 @@
 package com.challenge.quasar.domain.message.services;
 
+import com.challenge.quasar.domain.message.exceptions.MessageException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +18,7 @@ public class MessageServiceTest {
     private MessageService messageService;
 
     @Test
-    public void getSecretMessage()  {
+    public void getSecretMessage() throws MessageException {
         List<List<String>> messages = new ArrayList<>();
 
         messages.add((Arrays.asList(new String[]{"este", "", "", "mensaje", ""})));

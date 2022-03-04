@@ -1,5 +1,6 @@
 package com.challenge.quasar.domain.position.services;
 
+import com.challenge.quasar.domain.position.exceptions.PositionException;
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
@@ -16,7 +17,12 @@ public class PositionService {
     @Autowired
     private Environment env;
 
-    public double[] getLocation(double[] distances) {
+    public double[] getLocation(double[] distances) throws PositionException {
+
+        double[][] secretPositions = secretPositions();
+        if(distances.length != secretPositions.length) {
+            throw new PositionException("The number of positions you provided, does not match the number of distances.");
+        }
 
         NonLinearLeastSquaresSolver solver = new
                 NonLinearLeastSquaresSolver(
