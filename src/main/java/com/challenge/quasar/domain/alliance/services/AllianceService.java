@@ -19,7 +19,8 @@ public class AllianceService {
     public OutgoingCommunication receiveCommunication(IncomingCommunication incomingCommunication)
     {
         double[] position = positionService.getLocation(incomingCommunication.distances());
+        String secretMessage = messageService.getMessage(incomingCommunication.secretMessages());
 
-        return new OutgoingCommunication(position);
+        return new OutgoingCommunication(position, secretMessage);
     }
 }
