@@ -1,5 +1,9 @@
 package com.challenge.quasar.domain.alliance.entities;
 
+import com.challenge.quasar.domain.alliance.models.TopSecret;
+import org.json.JSONArray;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class Satellite {
@@ -32,5 +36,20 @@ public class Satellite {
 
     public void setMessage(List<String> message) {
         this.message = message;
+    }
+
+    public TopSecret buildTopSecret() {
+
+        JSONArray json = new JSONArray();
+
+        json.put(getMessage());
+
+        TopSecret topSecret = new TopSecret();
+        topSecret.setSatellite(getName());
+        topSecret.setDistance(getDistance());
+        topSecret.setMessage(json.toString());
+
+        return topSecret;
+
     }
 }
