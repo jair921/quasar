@@ -9,7 +9,7 @@ public class IncomingCommunication {
 
     public double[] distances() {
 
-        double[] distances = new double[3];
+        double[] distances = new double[satellites.size()];
 
         for(int i = 0; i < satellites.size(); i++){
             distances[i] = satellites.get(i).getDistance();
