@@ -1,0 +1,125 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+<body>
+<h2 id="requirements">Requirements</h2>
+<ol>
+    <li>Java 17</li>
+    <li>Maven installed</li>
+    <li>MySql server</li>
+</ol>
+<h2 id="running-the-application-locally">Running the application locally</h2>
+<pre><code class="lang-bash">git clone https:<span class="hljs-comment">//github.com/jair921/quasar.git</span>
+<span class="hljs-keyword">cd</span> quasar
+# <span class="hljs-keyword">On</span> src/main/resources/application.properties configure database connection
+mvn spring-<span class="hljs-keyword">boot</span>:<span class="hljs-keyword">run</span>
+</code></pre>
+<h2 id="url-service">URL Service</h2>
+<p><a href="https://fire-quasar-jair.herokuapp.com/">https://fire-quasar-jair.herokuapp.com/</a></p>
+<h2 id="rest-endpoints">Rest endpoints</h2>
+<h3 id="top-secret">Top secret</h3>
+<p>Request</p>
+<pre><code class="lang-bash"><span class="hljs-symbol">POST</span> /topsecret
+{
+    <span class="hljs-string">"satellites"</span>: [
+        {
+            <span class="hljs-string">"name"</span>: <span class="hljs-string">"kenobi"</span>,
+            <span class="hljs-string">"distance"</span>: <span class="hljs-number">100.0</span>,
+            <span class="hljs-string">"message"</span>: [
+                <span class="hljs-string">"este"</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">"mensaje"</span>,
+                <span class="hljs-string">""</span>
+            ]
+        },
+        {
+            <span class="hljs-string">"name"</span>: <span class="hljs-string">"skywalker"</span>,
+            <span class="hljs-string">"distance"</span>: <span class="hljs-number">115.5</span>,
+            <span class="hljs-string">"message"</span>: [
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">"es"</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">"secreto"</span>
+            ]
+        },
+        {
+            <span class="hljs-string">"name"</span>: <span class="hljs-string">"sato"</span>,
+            <span class="hljs-string">"distance"</span>: <span class="hljs-number">142.7</span>,
+            <span class="hljs-string">"message"</span>: [
+                <span class="hljs-string">"este"</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">"un"</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">""</span>
+            ]
+        }
+    ]
+}
+</code></pre>
+<p>Response</p>
+<pre><code class="lang-bash">{
+    <span class="hljs-attr">"position"</span>: [
+        <span class="hljs-number">-58.315252587138595</span>,
+        <span class="hljs-number">-69.55141837312165</span>
+    ],
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"este es un mensaje secreto"</span>
+}
+</code></pre>
+<h3 id="top-secret-split-store-">Top secret split (store)</h3>
+<p>Request</p>
+<pre><code class="lang-bash">POST /topsecret_split/{satellite_name}
+{
+    <span class="hljs-string">"distance"</span>: <span class="hljs-number">142.7</span>,
+    <span class="hljs-string">"message"</span>: [
+                <span class="hljs-string">"este"</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">"un"</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">""</span>
+            ]
+}
+</code></pre>
+<p>Response</p>
+<pre><code class="lang-bash">{
+    <span class="hljs-attr">"position"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Store split message"</span>
+}
+</code></pre>
+<h3 id="top-secret-split">Top secret split</h3>
+<p>Request</p>
+<pre><code class="lang-bash">GET /<span class="hljs-class">topsecret_split
+</span>{
+    <span class="hljs-string">"distance"</span>: <span class="hljs-number">142.7</span>,
+    <span class="hljs-string">"message"</span>: [
+                <span class="hljs-string">"este"</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">"un"</span>,
+                <span class="hljs-string">""</span>,
+                <span class="hljs-string">""</span>
+            ]
+}
+</code></pre>
+<p>Response</p>
+<pre><code class="lang-bash">{
+    <span class="hljs-attr">"position"</span>: [
+        <span class="hljs-number">59.634420899438396</span>,
+        <span class="hljs-number">-30.932718106937056</span>
+    ],
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"este es un mensaje secreto"</span>
+}
+</code></pre>
+<h3 id="remove-old-split-messages">Remove old split messages</h3>
+<p>Request</p>
+<pre><code class="lang-bash"><span class="hljs-attribute">POST</span> /restart_split
+</code></pre>
+<p>Response</p>
+<pre><code class="lang-bash">{
+    <span class="hljs-attr">"position"</span>: <span class="hljs-literal">null</span>,
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Remove all split messages."</span>
+}
+</code></pre>
+</body>
+</html>
