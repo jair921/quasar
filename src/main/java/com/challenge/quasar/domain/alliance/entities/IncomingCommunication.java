@@ -5,4 +5,23 @@ import java.util.List;
 public class IncomingCommunication {
 
     private List<Satellite> satellites;
+
+    public double[] distances() {
+
+        double[] distances = new double[3];
+
+        for(int i = 0; i < satellites.size(); i++){
+            distances[i] = satellites.get(i).getDistance();
+        }
+
+        return distances;
+    }
+
+    public List<Satellite> getSatellites() {
+        return satellites;
+    }
+
+    public void setSatellites(List<Satellite> satellites) {
+        this.satellites = satellites;
+    }
 }
